@@ -14,7 +14,7 @@ def preprocess_text(text):
 # This pipeline includes both the vectorizer and the classifier.
 import os
 
-BASE_DIR = os.path.dirname(os.path.abspath(_file_))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 model = joblib.load(os.path.join(BASE_DIR, "test_classifier_pipeline.pkl"))
 vectorizer = joblib.load(os.path.join(BASE_DIR, "vectorizer.pkl"))
