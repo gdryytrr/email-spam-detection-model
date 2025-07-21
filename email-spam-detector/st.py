@@ -12,9 +12,12 @@ def preprocess_text(text):
 
 # Load the pre-trained model pipeline from the current directory.
 # This pipeline includes both the vectorizer and the classifier.
-model = joblib.load("test_classifier_pipeline.pkl")
-# Load the pre-trained vectorizer from the current directory.
-vectorizer = joblib.load("vectorizer.pkl")
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(_file_))
+
+model = joblib.load(os.path.join(BASE_DIR, "test_classifier_pipeline.pkl"))
+vectorizer = joblib.load(os.path.join(BASE_DIR, "vectorizer.pkl"))
 
 # Define a function to predict the message category (spam or legit) using the model.
 def predict_spam(message):
