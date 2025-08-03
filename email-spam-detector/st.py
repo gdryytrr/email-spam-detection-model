@@ -60,7 +60,7 @@ if st.button("🔍 Detect"):
             # Append the message along with its category to the spam_messages list in session state.
             st.session_state.spam_messages.append((user_input, "Unsafe Link Spam"))
             # Display an error message indicating the message is spam due to unsafe links.
-            st.error("🚨 This message is identified as spam due to unsafe links (HTTP instead of HTTPS).")
+            st.error("🚨 This message is identified as spam due to unsafe links.")
         else:
             # Use the predict_spam function to get the predicted label and confidence for the input message.
             prediction, confidence = predict_spam(user_input)
@@ -72,3 +72,4 @@ if st.button("🔍 Detect"):
                 # If the prediction is 0 (legit), append the message to legit_messages and display a success message.
                 st.session_state.legit_messages.append(user_input)
                 st.success(f"✅ This message is classified as **Legit** with {confidence * 100:.2f}% confidence.")
+
