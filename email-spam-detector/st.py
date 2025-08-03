@@ -7,6 +7,52 @@ import numpy as np
 
 # Define a simple text preprocessing function used during unpickling the vectorizer.
 # This function converts the input text to lowercase.
+# Add custom CSS styling for fonts, buttons, and layout
+st.markdown(
+    """
+    <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+    }
+    .stTextArea textarea {
+        font-size: 16px;
+        font-family: 'Courier New', monospace;
+        background-color: #f0f8ff;
+        color: #000080;
+    }
+    .stButton>button {
+        background-color: #4B0082;
+        color: white;
+        font-weight: bold;
+        border-radius: 10px;
+        padding: 0.5em 1em;
+    }
+    .spam-message {
+        background-color: #ffdddd;
+        color: #8B0000;
+        padding: 15px;
+        border-left: 6px solid #f44336;
+        border-radius: 5px;
+    }
+    .legit-message {
+        background-color: #ddffdd;
+        color: #006400;
+        padding: 15px;
+        border-left: 6px solid #4CAF50;
+        border-radius: 5px;
+    }
+    .header-title {
+        color: #4B0082;
+        font-size: 36px;
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: 'Trebuchet MS', sans-serif;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 def preprocess_text(text):
     return text.lower()  # Convert and return the text in lowercase
 
@@ -72,6 +118,7 @@ if st.button("🔍 Detect"):
                 # If the prediction is 0 (legit), append the message to legit_messages and display a success message.
                 st.session_state.legit_messages.append(user_input)
                 st.success(f"✅ This message is classified as **Legit** with {confidence * 100:.2f}% confidence.")
+
 
 
 
