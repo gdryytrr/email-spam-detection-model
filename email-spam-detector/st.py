@@ -3,20 +3,14 @@ import joblib
 import numpy as np
 import os
 
-# Preprocess function (used during unpickling if needed)
-def preprocess_text(text):
-    return text.lower()
-
-# Load model and vectorizer
+# Load pipeline (vectorizer + model together)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model = joblib.load(os.path.join(BASE_DIR, "test_classifier_pipeline.pkl"))
-vectorizer = joblib.load(os.path.join(BASE_DIR, "vectorizer.pkl"))
 
 # Prediction function
 def predict_spam(message):
-    transformed_text = vectorizer.transform([message])
-    prediction = model.predict(transformed_text)[0]
-    confidence = np.max(model.predict_proba(transformed_text))
+    prediction = model.predict([message])[0]
+    confidence = np.max(model.predict_proba([message]))
     return prediction, confidence
 
 # Streamlit page settings
@@ -37,6 +31,8 @@ if st.button("🔍 Detect"):
             st.error(f"🚨 This message is classified as **Spam** with {confidence * 100:.2f}% confidence.")
         else:
             st.success(f"✅ This message is classified as **Legit** with {confidence * 100:.2f}% confidence.")
+
+
 
 
 
