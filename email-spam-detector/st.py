@@ -1,36 +1,47 @@
 import streamlit as st
-import joblib
-import numpy as np
-import os
+import pickle
 
-# Load pipeline (vectorizer + model together)
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-model = joblib.load(os.path.join(BASE_DIR, "test_classifier_pipeline.pkl"))
+# ------------------------
+# Load the model & vectorizer
+# ------------------------
+with open("test_classifier_pipeline.pkl", "rb") as f:
+    model = pickle.load(f)
 
+with open("vectorizer (1).pkl", "rb") as f:
+    vectorizer = pickle.load(f)
+
+# ------------------------
 # Prediction function
+# ------------------------
 def predict_spam(message):
-    prediction = model.predict([message])[0]
-    confidence = np.max(model.predict_proba([message]))
+    # Vectorize the input text
+    message_transformed = vectorizer.transform([message])
+    
+    # Predict
+    prediction = model.predict(message_transformed)[0]
+    confidence = model.predict_proba(message_transformed).max() * 100  # percentage
+    
     return prediction, confidence
 
-# Streamlit page settings
-st.set_page_config(page_title="Email Spam Detector", page_icon="📩", layout="centered")
-st.title("📩 Email Spam Detector")
-st.markdown("#### Enter a Message:")
+# ------------------------
+# Streamlit UI
+# ------------------------
+st.title("📧 Email Spam Detection App")
 
-# User input
-user_input = st.text_area("Put a message here...")
+user_input = st.text_area("Enter your email message:")
 
-if st.button("🔍 Detect"):
-    if not user_input.strip():
-        st.warning("⚠️ Please enter a message to check.")
-    else:
+if st.button("Check"):
+    if user_input.strip():
         prediction, confidence = predict_spam(user_input)
 
-        if prediction == 1:
-            st.error(f"🚨 This message is classified as **Spam** with {confidence * 100:.2f}% confidence.")
-        else:
-            st.success(f"✅ This message is classified as **Legit** with {confidence * 100:.2f}% confidence.")
+        if prediction == 1:  # Assuming 1 = Spam
+            st.error(f"🚨 This message is SPAM! Confidence: {confidence:.2f}%")
+        else:  # Assuming 0 = Not Spam
+            st.success(f"✅ This message is NOT spam. Confidence: {confidence:.2f}%")
+    else:
+        st.warning("Please enter a message first.")
+
+
 
 
 
